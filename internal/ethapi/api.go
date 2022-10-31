@@ -2200,6 +2200,11 @@ func (s *BundleAPI) CallBundle(ctx context.Context, args CallBundleArgs) (map[st
 		jsonResult["ethSentToCoinbase"] = new(big.Int).Sub(coinbaseDiffTx, gasFeesTx).String()
 		jsonResult["gasPrice"] = new(big.Int).Div(coinbaseDiffTx, big.NewInt(int64(receipt.GasUsed))).String()
 		jsonResult["gasUsed"] = receipt.GasUsed
+		var logs []types.Log
+		for _, log := range receipt.Logs {
+			logs = append(logs, *log)
+		}
+		jsonResult["logs"] = logs
 		results = append(results, jsonResult)
 	}
 
